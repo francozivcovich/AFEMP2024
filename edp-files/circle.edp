@@ -1,0 +1,6 @@
+load "iovtk"
+border a(t=0, 2*pi){ x=2+4*cos(t); y=0+4*sin(t); label=1;}
+real CN = 10;
+mesh Th = buildmesh(a(CN));
+// savevtk( "/Users/francozeta/teaching/FE-in-industries_no-pain/edp-files/circle.vtu", Th );
+savevtk( "../mesh-files/circle.vtu", Th );

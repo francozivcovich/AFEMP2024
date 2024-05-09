@@ -1,0 +1,20 @@
+load "iovtk"
+
+real R = 2;
+real r = 1;
+real th0 = 0;
+real th1 = pi / 2;
+
+border a( t = th0, th1 ){  x = R * cos(t  ); y = R * sin(t  ); }
+border b( t =   0,   1 ){  x =            0; y = R * sin(th1) - t * ( R - r ); }
+border c( t = th1, th0 ){  x = r * cos(t  ); y = r * sin(t  ); }
+border d( t =   0,   1 ){  x = R * t + r * ( 1 - t ); y =            0; }
+
+mesh Th = buildmesh( a( 10 ) + b( 5 ) + c( 5 ) + d( 5 ) );
+
+savevtk( "../mesh-files/crown.vtu", Th );
+
+
+
+// Plot the mesh
+// plot(Th, wait=true);

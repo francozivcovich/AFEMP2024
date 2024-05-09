@@ -1,0 +1,12 @@
+load "tetgen"
+load "iovtk"
+
+mesh Th = square( 100, 100,[2*x*pi,2*y*pi]);
+real R = 0.6;
+real r = 0.2;
+func f1 = ( R + r * cos( x ) ) * cos( y );
+func f2 = ( R + r * cos( x ) ) * sin( y );
+func f3 =       r * sin( x );
+mesh3 Th3 = tetgtransfo( Th, transfo = [ f1, f2, f3 ] );
+// plot( Th3 );
+savevtk( "../mesh-files/torus_hard.vtu", Th3 );
