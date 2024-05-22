@@ -5013,63 +5013,62 @@ Th=movemesh(Th,[x*scale,y*scale]);
 
 Th=adaptmesh(Th,err=0.005,iso=1,thetamax=25,nbvx=50000);
 
-savevtk( "../mesh-files/gardasee.vtu", Th );
+// savevtk( "../mesh-files/gardasee.vtu", Th );
 
 // Uncomment the following for having Parisotto's original code
-// plot(Th);
-//
-//
-// // newton's parameter
-// macro jacobian(u)[dx(u),dy(u)] // end macro
-// real eps=1e-6;
-//
-// real T =50,dt=0.001;
-// real theta = 1;// 1=implicito 0=esplicito
-//
-// func u0 = 0;
-//
-// // PDE Parameters
-// //func d = 120; // Diffusion Term
-// //func tx1 = -60; // Transport Term
-// //func ty1 = -100; // Trasport Term
-// //func tx2 = 120*(y<1500); // Transport Term
-// //func ty2 = -60*(y<1500); // Trasport Term
-// //func r = 0.01; // reaction
-//
-// func d = 5; // Diffusion Term
-// func tx1 = -200; // Transport Term
-// func ty1 = -250; // Trasport Term
-// func tx2 = 320*(y<5); // Transport Term
-// func ty2 = -110*(y<5); //Trasport Term
-// func r = 0.0005; // reaction
-//
-// func sarca1 = 200;
-// func sarca2 = 0;
-//
-// real a = 0.5;
-// real b = 1;
-//
-// fespace Vh(Th,P1);
-// Vh u=u0, v,uold;
-//
-// // Equation with theta
-// problem dtr1(u,v,solver=GMRES) = int2d(Th)(u*v/dt + theta*(d*(dx(v)*dx(u)+dy(v)*dy(u)) + tx1*dx(u)*v + ty1*dy(u)*v + tx2*dx(u)*v + ty2*dy(u)*v - r*u*v)) + int2d(Th)((1-theta)*( d*(dx(v)*dx(uold)+dy(v)*dy(uold)) + tx1*dx(uold)*v + ty1*dy(uold)*v + tx2*dx(uold)*v + ty2*dy(uold)*v + r*uold*v))- int2d(Th)(uold*v/dt) + on(Gamma1,u=0) + on(Gamma3,u=sarca1);
-//
-// problem dtr2(u,v,solver=GMRES) = int2d(Th)(u*v/dt + theta*(d*(dx(v)*dx(u)+dy(v)*dy(u)) + tx1*dx(u)*v + ty1*dy(u)*v + tx2*dx(u)*v + ty2*dy(u)*v - r*u*v)) + int2d(Th)((1-theta)*( d*(dx(v)*dx(uold)+dy(v)*dy(uold)) + tx1*dx(uold)*v + ty1*dy(uold)*v + tx2*dx(uold)*v + ty2*dy(uold)*v + r*uold*v)) - int2d(Th)(uold*v/dt) + on(Gamma1,u=0) + on(Gamma3,u=sarca2);
-//
-//
-// real[int] viso=[-50,-40,-30,-20,-10,-5,-1,0,1,5,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530];
-//
-// //real[int] viso=[-400,-300,-200,-100,0,100,200,300,400];
-//
-//
-// for(real t=0;t<T;t+=dt){
-// 	uold=u;
-// 	if(t<20*dt){
-// 		dtr1;
-// 	}
-// 	else{
-// 		dtr2;
-// 	}
-// 	plot(u,fill=true,viso=viso,value=true,wait=debug,boundary=false);
-// }
+plot(Th);
+
+
+// newton's parameter
+macro jacobian(u)[dx(u),dy(u)] // end macro
+real eps=1e-6;
+
+real T =50,dt=0.001;
+real theta = 1;// 1=implicito 0=esplicito
+
+func u0 = 0;
+
+// PDE Parameters
+//func d = 120; // Diffusion Term
+//func tx1 = -60; // Transport Term
+//func ty1 = -100; // Trasport Term
+//func tx2 = 120*(y<1500); // Transport Term
+//func ty2 = -60*(y<1500); // Trasport Term
+//func r = 0.01; // reaction
+
+func d = 5; // Diffusion Term
+func tx1 = -200; // Transport Term
+func ty1 = -250; // Trasport Term
+func tx2 = 320*(y<5); // Transport Term
+func ty2 = -110*(y<5); //Trasport Term
+func r = 0.0005; // reaction
+
+func sarca1 = 200;
+func sarca2 = 0;
+
+real a = 0.5;
+real b = 1;
+
+fespace Vh(Th,P1);
+Vh u=u0, v,uold;
+
+// Equation with theta
+problem dtr1(u,v,solver=GMRES) = int2d(Th)(u*v/dt + theta*(d*(dx(v)*dx(u)+dy(v)*dy(u)) + tx1*dx(u)*v + ty1*dy(u)*v + tx2*dx(u)*v + ty2*dy(u)*v - r*u*v)) + int2d(Th)((1-theta)*( d*(dx(v)*dx(uold)+dy(v)*dy(uold)) + tx1*dx(uold)*v + ty1*dy(uold)*v + tx2*dx(uold)*v + ty2*dy(uold)*v + r*uold*v)) - int2d(Th)(uold*v/dt) + on(Gamma1,u=0) + on(Gamma3,u=sarca1);
+problem dtr2(u,v,solver=GMRES) = int2d(Th)(u*v/dt + theta*(d*(dx(v)*dx(u)+dy(v)*dy(u)) + tx1*dx(u)*v + ty1*dy(u)*v + tx2*dx(u)*v + ty2*dy(u)*v - r*u*v)) + int2d(Th)((1-theta)*( d*(dx(v)*dx(uold)+dy(v)*dy(uold)) + tx1*dx(uold)*v + ty1*dy(uold)*v + tx2*dx(uold)*v + ty2*dy(uold)*v + r*uold*v)) - int2d(Th)(uold*v/dt) + on(Gamma1,u=0) + on(Gamma3,u=sarca2);
+
+
+real[int] viso=[-50,-40,-30,-20,-10,-5,-1,0,1,5,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530];
+
+//real[int] viso=[-400,-300,-200,-100,0,100,200,300,400];
+
+
+for(real t=0;t<T;t+=dt){
+	uold=u;
+	if(t<20*dt){
+		dtr1;
+	}
+	else{
+		dtr2;
+	}
+	plot(u,fill=true,viso=viso,value=true,wait=debug,boundary=false);
+}
